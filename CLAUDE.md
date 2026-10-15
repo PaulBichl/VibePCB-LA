@@ -10,3 +10,21 @@ diff pair), then the full board `boards/la-main`.
 
 This repo uses the latest tscircuit (no local node_modules patches, unlike VibePCB-smu): record any
 router workaround here.
+
+## Spike findings (tscircuit core 0.0.2891, capacity-autorouter 0.0.982)
+
+- Copper pours need `boardEdgeMargin="0.5mm"` (default 0.2 mm fails the placement gate).
+- More than 50 traces: the board needs `routeRemaining` (else tscircuit refuses to route).
+- `<differentialpair>` sides must be single point-to-point connections: a net with a third pad
+  (USB-C DP1 + DP2) crashes the router ("matches multiple SRJ connections"). Declare the pair
+  where the line is point-to-point (ESD -> FT2232H); VibePCB's build now stops on such crashes.
+- KiCad diff pairs need net names ending in `_P` / `_N`: name the traces (`USB_P`), the nets take
+  the trace names (`vibepcb.toml` holds the net class and the uncoupled-length rule).
+- BGA (ECP5 CABGA-256, 0.8 mm):
+  - `<breakout>` boundary fan-out: only 60 of 99 connections escape (inner rings), more room
+    doesn't help.
+  - `autorouter="dogbone"` crashes on any board with a copper pour on an escaped net (reproduced
+    with tscircuit's own docs example + plane pours: "Dogbone connection ... has no source pad").
+  - Self-computed dogbones via `pcbTracePaths` avoid that crash, but the global router then fails
+    in TopologyMergingSolver ("unresolved inter-group overlap" at a ball) - the known BGA issue
+    tscircuit's docs mention.

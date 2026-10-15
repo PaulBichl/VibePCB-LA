@@ -1,0 +1,12 @@
+# USB 2.0 HS: 90 ohm differential. Width / gap for JLCPCB's 6-layer stack-up (outer layer over a
+# ~0.1 mm prepreg to the GND plane): 0.15 / 0.15 mm is a first estimate - check with JLCPCB's
+# impedance calculator for the chosen stack-up before ordering.
+[netclass.USB]
+nets = ["USB*_P", "USB*_N"]
+track_width = 0.15
+clearance = 0.15
+diff_pair_width = 0.15
+diff_pair_gap = 0.15
+
+[diff_pair]
+max_uncoupled = 3.0

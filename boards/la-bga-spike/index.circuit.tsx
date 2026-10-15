@@ -32,14 +32,14 @@ export default () => (
   <board width="70mm" height="50mm" layers={6} minTraceWidth="0.1mm" defaultTraceWidth="0.1mm"
     minTraceToPadEdgeClearance="0.1mm" minViaEdgeToPadEdgeClearance="0.1mm" minViaHoleDiameter="0.2mm"
     minViaPadDiameter="0.4mm" minBoardEdgeClearance="0.5mm">
-    <copperpour layer="top" connectsTo="net.GND" />
-    <copperpour layer="inner1" connectsTo="net.GND" />
-    <copperpour layer="inner2" connectsTo="net.GND" />
-    <copperpour layer="inner3" connectsTo="net.V3V3" />
-    <copperpour layer="inner4" connectsTo="net.GND" />
-    <copperpour layer="bottom" connectsTo="net.GND" />
+    <copperpour layer="top" connectsTo="net.GND" boardEdgeMargin="0.5mm" />
+    <copperpour layer="inner1" connectsTo="net.GND" boardEdgeMargin="0.5mm" />
+    <copperpour layer="inner2" connectsTo="net.GND" boardEdgeMargin="0.5mm" />
+    <copperpour layer="inner3" connectsTo="net.V3V3" boardEdgeMargin="0.5mm" />
+    <copperpour layer="inner4" connectsTo="net.GND" boardEdgeMargin="0.5mm" />
+    <copperpour layer="bottom" connectsTo="net.GND" boardEdgeMargin="0.5mm" />
 
-    <breakout name="FPGA_BREAKOUT" pcbX={-10} pcbY={0} width="22mm" height="22mm"
+    <breakout name="FPGA_BREAKOUT" pcbX={-10} pcbY={0} width="28mm" height="28mm"
       fanoutRoutingLayers={["top", "inner2", "bottom"]} fanoutPourNetMap={{ inner1: "GND", inner3: "V3V3" }}
       busFanoutDirections={{ SDRAM_DQ: "center_right", SDRAM_CA: "center_right", INPUTS: "center_left" }}>
       <LFE5U_25F_7BG256I name="U1" />
@@ -51,18 +51,18 @@ export default () => (
 
     {/* FPGA decoupling: 1.1 V core, 2.5 V aux, 3.3 V IO */}
     {[0, 1, 2, 3].map((i) => (
-      <capacitor key={`cc${i}`} name={`C${1 + i}`} capacitance="100nF" {...C100N} pcbX={-16 + i * 2} pcbY={13} />
+      <capacitor key={`cc${i}`} name={`C${1 + i}`} capacitance="100nF" {...C100N} pcbX={-16 + i * 2} pcbY={16} />
     ))}
-    <capacitor name="C5" capacitance="10uF" {...C10U} pcbX={-7} pcbY={13} />
+    <capacitor name="C5" capacitance="10uF" {...C10U} pcbX={-7} pcbY={16} />
     {[1, 2, 3, 4].map((i) => <trace key={`tc${i}`} from={`.C${i} > .pin1`} to="net.V1V1" />)}
     <trace from=".C5 > .pin1" to="net.V1V1" />
-    <capacitor name="C6" capacitance="100nF" {...C100N} pcbX={-4} pcbY={13} />
-    <capacitor name="C7" capacitance="100nF" {...C100N} pcbX={-2} pcbY={13} />
+    <capacitor name="C6" capacitance="100nF" {...C100N} pcbX={-4} pcbY={16} />
+    <capacitor name="C7" capacitance="100nF" {...C100N} pcbX={-2} pcbY={16} />
     <trace from=".C6 > .pin1" to="net.V2V5" />
     <trace from=".C7 > .pin1" to="net.V2V5" />
     {[0, 1, 2, 3, 4, 5].map((i) => (
       <capacitor key={`cio${i}`} name={`C${8 + i}`} capacitance="100nF" {...C100N} pcbX={-16 + i * 2.4}
-        pcbY={-13} />
+        pcbY={-16} />
     ))}
     {[8, 9, 10, 11, 12, 13].map((n) => <trace key={`tio${n}`} from={`.C${n} > .pin1`} to="net.V3V3" />)}
     {Array.from({ length: 13 }, (_, i) => i + 1).map((n) => (
@@ -70,7 +70,7 @@ export default () => (
     ))}
 
     {/* SDRAM */}
-    <W9825G6KH_6 name="U2" pcbX={17} pcbY={0} />
+    <W9825G6KH_6 name="U2" pcbX={20} pcbY={0} />
     {SDRAM_SIGNALS.map((sig, i) => (
       <trace key={sig} name={`SD_${sig}`} from={`.U1 > .${SDRAM_BALLS[i]}`} to={`.U2 > .${sig}`} />
     ))}
@@ -83,7 +83,7 @@ export default () => (
       <trace key={p} from={`.U2 > .${p}`} to="net.GND" />
     ))}
     {[0, 1, 2, 3].map((i) => (
-      <capacitor key={`cs${i}`} name={`C${14 + i}`} capacitance="100nF" {...C100N} pcbX={10 + i * 4.5} pcbY={14} />
+      <capacitor key={`cs${i}`} name={`C${14 + i}`} capacitance="100nF" {...C100N} pcbX={13 + i * 4.5} pcbY={16} />
     ))}
     {[14, 15, 16, 17].map((n) => [
       <trace key={`ts${n}a`} from={`.C${n} > .pin1`} to="net.V3V3" />,
@@ -97,7 +97,7 @@ export default () => (
     {[17, 18, 19, 20].map((p) => <trace key={`jg${p}`} from={`.J1 > .pin${p}`} to="net.GND" />)}
 
     {/* JTAG + power entry */}
-    <pinheader name="J2" pinCount={6} pitch="2.54mm" pcbX={-8} pcbY={-21} />
+    <pinheader name="J2" pinCount={6} pitch="2.54mm" pcbX={-8} pcbY={-21.5} />
     {[["T10", 3], ["R11", 4], ["M10", 5], ["T11", 6]].map(([b, p]) => (
       <trace key={`jt${b}`} from={`.U1 > .${b}`} to={`.J2 > .pin${p}`} />
     ))}
