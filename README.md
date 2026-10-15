@@ -22,20 +22,25 @@ front end are next.
 
 ## How it works
 
-```mermaid
-flowchart LR
-    J1["probe header<br/>16 ch + GND"] --> PROT["1k + SRV05-4<br/>clamps, 1M"]
-    PROT --> LVL["74LVC8T245 x2<br/>level shift"]
-    LVL --> FPGA["iCE40HX4K<br/>TQFP-144"]
-    OSC["100 MHz osc"] --> FPGA
-    FPGA <--> SDRAM["W9825G6KH<br/>32 MB SDRAM"]
-    FPGA <-->|"8-bit sync FIFO"| FT["FT2232H"]
-    FT -->|"ch B: SPI"| FLASH["W25Q128<br/>config flash"]
-    FLASH --> FPGA
-    FT <-->|"USB 2.0 HS"| USB["USB-C + ESD"]
-    FPGA -->|"PWM"| VIO["RC + TLV9062<br/>bank rail 1.2-5 V"]
-    VIO --> LVL
-    USB -->|"5 V"| PWR["TLV62569 x2<br/>3.3 V, 1.2 V"]
+```
+ probe     +--------------+    +---------------+    +-------------+
+ header -->| 1k, 1M,      |--->| 74LVC8T245 x2 |--->|             |<--- 100 MHz osc
+ 16 ch     | SRV05-4      |    | level shift   |    |  iCE40HX4K  |
+           +--------------+    +---------------+    |  TQFP-144   |<==> W9825G6KH SDRAM
+                  ^                    ^            |             |     (32 MB)
+                  +--- bank rail ------+            |             |
+                       1.2-5 V, x2                  |             |
+                          ^                         |             |
+               TLV9062 + RC filter <------ PWM -----|             |
+                                                    +--+-------+--+
+                                                       ^       ^
+                                    W25Q128 -----------+       | 8-bit sync FIFO
+                                    config flash               v
+                                       ^  SPI (ch B)     +---------+  USB 2.0 HS  +------------+
+                                       +-----------------| FT2232H |<============>| USB-C, ESD |
+                                                         +---------+              +-----+------+
+                                                                                        | 5 V
+                                                     3.3 V, 1.2 V <--- TLV62569 x2 <----+
 ```
 
 **Signal path.** A probe signal enters the 2x10 header, passes a 1k series resistor (with the
