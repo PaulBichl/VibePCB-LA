@@ -1,5 +1,5 @@
 // VibePCB logic analyzer: 16 channels, 100 MSa/s into 32 MB SDRAM, read out over USB 2.0 HS.
-// 90 x 64 mm, 4 layers (top signals + GND / In1 GND / In2 3V3 plane / bottom signals + GND).
+// 98 x 64 mm, 4 layers (top signals + GND / In1 GND / In2 3V3 plane / bottom signals + GND).
 //
 // - Inputs: 2x10 header (16 signals + GND) -> 1k + SRV05-4 clamps to the bank rail / GND, 1M pull-down ->
 //   74LVC8T245 (A side on the bank rail VIO_A / VIO_B, B side 3.3 V) -> FPGA left side.
@@ -67,13 +67,25 @@ const FIFO_NAMES: Record<string, string> = {
   ACBUS5: "FT_CLKOUT", ACBUS6: "FT_OE_N",
 }
 
+// probe header J1: rows top to bottom as (left, right); tscircuit's pin numbers of those positions
+const HEADER_ROWS = [["CH0", "CH1"], ["CH2", "CH3"], ["CH4", "CH5"], ["CH6", "CH7"], ["GND", "GND"],
+  ["CH8", "CH9"], ["CH10", "CH11"], ["CH12", "CH13"], ["CH14", "CH15"], ["GND", "GND"]]
+const HEADER_LEFT = [12, 13, 14, 15, 16, 17, 18, 19, 20, 1]
+const HEADER_RIGHT = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
+const HEADER_PIN: Record<string, number> = Object.fromEntries(
+  HEADER_ROWS.flatMap(([l, r], k) => [[l, HEADER_LEFT[k]], [r, HEADER_RIGHT[k]]]).filter(([n]) => n !== "GND"),
+)
+const HEADER_GND_PINS = HEADER_ROWS.flatMap(([l, r], k) => [
+  ...(l === "GND" ? [HEADER_LEFT[k]] : []), ...(r === "GND" ? [HEADER_RIGHT[k]] : []),
+])
+
 const GND_PINS = ["GND1", "GND2", "GND3", "GND4", "GND5", "GND6", "GND7", "GND8", "GND9", "GNDPLL"]
 const V3V3_PINS = ["VCCIO_01", "VCCIO_02", "VCCIO_11", "VCCIO_12", "VCCIO_21", "VCCIO_22", "VCCIO_31", "VCCIO_32",
   "VCC_SPI", "VPP_2V5"]
 const V1V2_PINS = ["VCC1", "VCC2", "VCC3", "VCC4"]
 
 export default () => (
-  <board width="90mm" height="64mm" layers={4} minTraceWidth="0.1mm" defaultTraceWidth="0.15mm"
+  <board outline={[{ x: -53, y: 32 }, { x: 45, y: 32 }, { x: 45, y: -32 }, { x: -53, y: -32 }]} layers={4} minTraceWidth="0.1mm" defaultTraceWidth="0.15mm"
     minTraceToPadEdgeClearance="0.1mm" minViaEdgeToPadEdgeClearance="0.1mm" minViaHoleDiameter="0.2mm"
     minViaPadDiameter="0.4mm" minBoardEdgeClearance="0.5mm" routeRemaining>
     {["top", "inner1", "bottom"].map((layer) => (
@@ -201,8 +213,20 @@ export default () => (
     {net("GND", [".C25 > .pin2"])}
 
     {/* ======================== inputs ======================== */}
-    <pinheader name="J1" pinCount={20} doubleRow pitch="2.54mm" pcbX={-41} pcbY={-2} pcbRotation={90} />
-    {net("GND", [17, 18, 19, 20].map((p) => `.J1 > .pin${p}`))}
+    {/* probe header: row by row, bank A (CH0-7) on top, a GND row, bank B (CH8-15), a GND row; tscircuit numbers
+        this 2x10 around the block (left column 12..20 + 1 top to bottom, right 11..2), not like an IDC header,
+        so every pin is labelled */}
+    <pinheader name="J1" pinCount={20} doubleRow pitch="2.54mm" pcbX={-47} pcbY={-2} pcbRotation={90} />
+    {HEADER_ROWS.flatMap(([left, right], k) => {
+      const y = -2 + 11.43 - k * 2.54
+      return [
+        <silkscreentext key={`hl${k}`} text={left} pcbX={-49.4} pcbY={y} fontSize="0.8mm" anchorAlignment="center_right" />,
+        <silkscreentext key={`hr${k}`} text={right} pcbX={-44.6} pcbY={y} fontSize="0.8mm" anchorAlignment="center_left" />,
+      ]
+    })}
+    <silkscreentext text="A: CH0-7" pcbX={-47} pcbY={12.3} fontSize="1mm" />
+    <silkscreentext text="B: CH8-15" pcbX={-47} pcbY={-16.3} fontSize="1mm" />
+    {net("GND", HEADER_GND_PINS.map((p) => `.J1 > .pin${p}`))}
     {/* per group of 4 channels: 1k series array, 1M pull-down array, SRV05-4 clamp (steering diodes to the
         bank rail / GND, 0.3 pF). Array element k: pins k+1 and 8-k */}
     {[0, 1, 2, 3].map((g) => {
@@ -218,7 +242,7 @@ export default () => (
           const ch = g * 4 + k
           const u = ch < 8 ? "U6" : "U7"
           return [
-            <trace key={`ti${ch}`} from={`.J1 > .pin${ch + 1}`} to={`.RN${1 + g} > .pin${k + 1}`} />,
+            <trace key={`ti${ch}`} from={`.J1 > .pin${HEADER_PIN[`CH${ch}`]}`} to={`.RN${1 + g} > .pin${k + 1}`} />,
             ...net(`IN${ch}`, [`.RN${1 + g} > .pin${8 - k}`, `.RN${5 + g} > .pin${k + 1}`, `.D${1 + g} > .IO${k + 1}`,
               `.${u} > .A${(ch % 8) + 1}`]),
             ...net("GND", [`.RN${5 + g} > .pin${8 - k}`]),
@@ -284,6 +308,13 @@ export default () => (
         ...net("GND", [`.${u} > .GND`, `.C${n} > .pin2`, `.C${n + 1} > .pin2`, `.R${n + 1} > .pin2`]),
       ]
     })}
+
+    {/* ======================== silkscreen ======================== */}
+    <silkscreentext text="VibePCB LA16 rev 1  16 ch / 100 MSa/s" pcbX={6} pcbY={-30} fontSize="1.2mm" />
+    <silkscreentext text="USB-C 5V" pcbX={-26} pcbY={20.5} fontSize="1mm" />
+    {["PWR", "ACT", "TRIG"].map((t, i) => (
+      <silkscreentext key={t} text={t} pcbX={32 + i * 3} pcbY={-29.5} fontSize="0.8mm" />
+    ))}
 
     {/* ======================== LEDs ======================== */}
     {[["D20", "V3V3", null], ["D21", "LED_ACT", "IOB_26"], ["D22", "LED_TRIG", "IOB_27"]].map(([d, n, pin], i) => [

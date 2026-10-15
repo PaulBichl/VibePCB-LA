@@ -22,7 +22,8 @@ max_skew = 45.0
 nets = ["SD_A*", "SD_BS*", "SD_N_*", "SD_CLK", "SD_CKE", "SD_LDQM", "SD_UDQM"]
 max_skew = 45.0
 
-# GND (In1 + outer pours) and 3.3 V (In2) are planes: every SMD pad gets its own via, the router's
-# pad-to-pad power tracks go (they knot up in the QFP pin fields)
+# GND (In1 + the outer pours) is a plane: every SMD pad gets its own via, the router's pad-to-pad GND
+# tracks go (they knot up in the QFP pin fields). Not 3.3 V: its only plane (In2) is cut into islands by
+# the via field around the QFP, so its pads stay routed.
 [planes]
-nets = ["GND", "V3V3"]
+nets = ["GND"]
