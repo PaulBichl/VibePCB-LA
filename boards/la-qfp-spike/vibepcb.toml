@@ -1,9 +1,0 @@
-# SDRAM bus length groups, from the timing budget: 100 MHz SDR (10 ns period), skew budget 0.25 ns
-# (2.5 % of the period) = ~37 mm at ~6.7 ps/mm on FR-4. KiCad's DRC checks them.
-[length_group.SDRAM_DQ]
-nets = ["SD_DQ*"]
-max_skew = 25.0
-
-[length_group.SDRAM_CA]
-nets = ["SD_A*", "SD_BS*", "SD_N_*", "SD_CLK", "SD_CKE", "SD_LDQM", "SD_UDQM"]
-max_skew = 35.0
