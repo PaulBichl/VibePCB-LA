@@ -28,3 +28,10 @@ router workaround here.
   - Self-computed dogbones via `pcbTracePaths` avoid that crash, but the global router then fails
     in TopologyMergingSolver ("unresolved inter-group overlap" at a ball) - the known BGA issue
     tscircuit's docs mention.
+- QFP (iCE40HX4K TQFP-144, 0.5 mm) works: routes in ~1 min, passes `check` (la-qfp-spike), with
+  - the FPGA rotated so its IO groups face their partners: the imported footprint puts pin 1 on its
+    *bottom* side (`pin1location(bottomside,left)`), i.e. 90 deg off the datasheet drawing - check
+    where each pin group lands (circuit JSON port positions) before assigning pins by side;
+  - a bus that doesn't fit one side split over both corners next to its partner (one corner took
+    44 errors of vias crowding, split: 0);
+  - length groups in `vibepcb.toml` from the timing budget (KiCad checks them; no tscircuit `<bus>`).
