@@ -21,3 +21,8 @@ max_skew = 45.0
 [length_group.SDRAM_CA]
 nets = ["SD_A*", "SD_BS*", "SD_N_*", "SD_CLK", "SD_CKE", "SD_LDQM", "SD_UDQM"]
 max_skew = 45.0
+
+# GND (In1 + outer pours) and 3.3 V (In2) are planes: every SMD pad gets its own via, the router's
+# pad-to-pad power tracks go (they knot up in the QFP pin fields)
+[planes]
+nets = ["GND", "V3V3"]
