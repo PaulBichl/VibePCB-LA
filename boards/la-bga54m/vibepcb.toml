@@ -1,0 +1,46 @@
+# USB 2.0 HS: 90 ohm differential. Width / gap for JLCPCB's 4-layer stack-up (outer layer over
+# ~0.2 mm prepreg to the GND plane): first estimate, check with JLCPCB's impedance calculator.
+[netclass.USB]
+nets = ["USB_P", "USB_N"]
+track_width = 0.2
+clearance = 0.15
+diff_pair_width = 0.2
+diff_pair_gap = 0.15
+
+[diff_pair]
+max_uncoupled = 3.0
+
+# SDRAM bus at 100 MHz SDR (10 ns): writes keep ~6 ns margin after tIS/tIH (1.5 / 0.8 ns) and FPGA
+# output variation; reads have a ~2.7 ns data window (tAC 5.4 / tOH 2.7 ns), captured on a gateware-tuned
+# clock phase. Skew <= 0.3 ns (~45 mm at ~6.7 ps/mm) is ~10 % of the read window. The DQ pins sit at both
+# ends of the 22 mm TSOP, so the group spreads ~40 mm without meanders (meanders: future, for 133 MHz+).
+[length_group.SDRAM_DQ]
+nets = ["SD_DQ*"]
+max_skew = 45.0
+
+[length_group.SDRAM_CA]
+nets = ["SD_A*", "SD_BS*", "SD_N_*", "SD_CLK", "SD_CKE", "SD_LDQM", "SD_UDQM"]
+max_skew = 45.0
+
+# GND (In1 + the outer pours) is a plane: every SMD pad gets its own via, the router's pad-to-pad GND
+# tracks go (they knot up in the QFP pin fields). Not 3.3 V: its only plane (In2) is cut into islands by
+# the via field around the QFP, so its pads stay routed.
+[planes]
+nets = ["GND", "V3V3"]
+
+# The BGA SDRAM's escape is made by VibePCB (vibepcb.fanout): tscircuit routes to the escape ends.
+# 0.1 mm tracks between 0.36 mm balls at 0.8 mm pitch; dogbone vias 0.4 / 0.2 mm (mechanically drilled).
+[escape.U2]
+track_width = 0.1
+clearance = 0.1
+via_diameter = 0.4
+via_drill = 0.2
+layers = ["bottom"]
+
+[routing]
+mode = "manual"
+
+# placement-only build (manual routing) has no pour on In2: the 3.3 V plane
+[pour.v3v3]
+net = "V3V3"
+layers = ["In2.Cu"]
