@@ -214,16 +214,17 @@ export default () => (
     {net("GND", [".R1 > .pin2", ".R2 > .pin2", ".J2 > .GND1", ".J2 > .GND2", ".J2 > .EH1", ".J2 > .EH2", ".J2 > .EH3",
       ".J2 > .EH4"])}
     {net("V5", [".J2 > .VBUS1", ".J2 > .VBUS2"])}
-    <USBLC6_2SC6 name="U4" pcbX={-15} pcbY={24} pcbRotation={90} />
-    <trace name="USB_C_P" from=".J2 > .DP1" to=".U4 > .IO1_A" />
-    <trace name="USB_C_N" from=".J2 > .DN1" to=".U4 > .IO2_A" />
+    {/* USBLC6 channels are identical: D+ on IO2, D- on IO1 keeps the pair's P / N order the same at both ends */}
+    <USBLC6_2SC6 name="U4" pcbX={-15} pcbY={24} pcbRotation={270} />
+    <trace name="USB_C_P" from=".J2 > .DP1" to=".U4 > .IO2_A" />
+    <trace name="USB_C_N" from=".J2 > .DN1" to=".U4 > .IO1_A" />
     <trace from=".J2 > .DP2" to=".J2 > .DP1" />
     <trace from=".J2 > .DN2" to=".J2 > .DN1" />
     {net("V5", [".U4 > .VBUS"])}
     {net("GND", [".U4 > .GND"])}
     <FT2232HL_REEL name="U3" pcbX={2} pcbY={22} />
-    <trace name="USB_P" from=".U4 > .IO1_B" to=".U3 > .DP" />
-    <trace name="USB_N" from=".U4 > .IO2_B" to=".U3 > .DM" />
+    <trace name="USB_P" from=".U4 > .IO2_B" to=".U3 > .DP" />
+    <trace name="USB_N" from=".U4 > .IO1_B" to=".U3 > .DM" />
     <differentialpair name="USB" positiveConnection="USB_P" negativeConnection="USB_N" maxLengthSkew={0.15} />
     {Object.entries(FIFO_PIN).map(([ft, b]) => (
       <trace key={ft} name={FIFO_NAMES[ft] ?? `FT_D${ft.slice(-1)}`} from={`.U3 > .${ft}`} to={`.U1 > .${b}`} />

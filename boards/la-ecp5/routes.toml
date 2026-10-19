@@ -1,6 +1,10 @@
 [defaults]
 layers = ["F.Cu", "B.Cu"]   # inner1 / inner4 GND, inner2 1.1 V, inner3 3.3 V: signals stay outside
 
+# USB 2.0 HS pair, coupled (90 ohm: width / gap from the USB net class)
+[[pair]]
+nets = ["USB_P", "USB_N"]
+
 # the SDRAM clock first: the critical net takes the direct way (a detour broke the 45 mm skew limit)
 [[route]]
 net = "SD_CLK"
@@ -29,5 +33,3 @@ order = "length"
 net = "*"
 order = "length"
 
-[router]
-joints = false
