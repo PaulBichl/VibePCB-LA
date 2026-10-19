@@ -1,0 +1,58 @@
+# USB 2.0 HS: 90 ohm differential. Width / gap for JLCPCB's 6-layer stack-up (outer layer over ~0.1 mm
+# prepreg to the inner1 GND plane): first estimate, check with JLCPCB's impedance calculator.
+[netclass.USB]
+nets = ["USB_P", "USB_N"]
+track_width = 0.2
+clearance = 0.15
+diff_pair_width = 0.2
+diff_pair_gap = 0.15
+
+[diff_pair]
+max_uncoupled = 3.0
+
+# SDRAM bus at 100 MHz SDR: skew <= 0.3 ns (~45 mm) is ~10 % of the read window (see la-main)
+[length_group.SDRAM_DQ]
+nets = ["SD_DQ*"]
+max_skew = 45.0
+
+[length_group.SDRAM_CA]
+nets = ["SD_A*", "SD_BS*", "SD_N_*", "SD_CLK", "SD_CKE", "SD_LDQM", "SD_UDQM"]
+max_skew = 45.0
+
+# planes: GND (outer pours, inner1, inner4), 1.1 V core (inner2), 3.3 V IO (inner3); their balls / pads get
+# a via to the plane
+[planes]
+nets = ["GND", "V1V1", "V3V3"]
+
+# both ball grids escaped by VibePCB (vibepcb.fanout): 0.1 mm tracks between 0.36 mm balls at 0.8 mm pitch,
+# dogbone vias 0.4 / 0.2 mm (mechanically drilled), deeper balls out on the bottom layer
+[escape.U1]
+track_width = 0.1
+clearance = 0.1
+via_diameter = 0.4
+via_drill = 0.2
+layers = ["bottom"]
+
+[escape.U2]
+track_width = 0.1
+clearance = 0.1
+via_diameter = 0.4
+via_drill = 0.2
+layers = ["bottom"]
+
+# VibePCB routes (routes.toml); tscircuit only places
+[routing]
+mode = "manual"
+
+# the placement-only build has no pours
+[pour.gnd]
+net = "GND"
+layers = ["F.Cu", "B.Cu", "In1.Cu", "In4.Cu"]
+
+[pour.v1v1]
+net = "V1V1"
+layers = ["In2.Cu"]
+
+[pour.v3v3]
+net = "V3V3"
+layers = ["In3.Cu"]

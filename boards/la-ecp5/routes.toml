@@ -1,0 +1,33 @@
+[defaults]
+layers = ["F.Cu", "B.Cu"]   # inner1 / inner4 GND, inner2 1.1 V, inner3 3.3 V: signals stay outside
+
+# the SDRAM clock first: the critical net takes the direct way (a detour broke the 45 mm skew limit)
+[[route]]
+net = "SD_CLK"
+
+# SD_DQ7 ends between its neighbours in the middle of the SDRAM's north row: routed before the bus, the
+# outer lanes go round it (after them, the lanes left it no room to fan in)
+[[route]]
+net = "SD_DQ7"
+
+# buses first, outermost arcs first (order = "angle", the default): SDRAM east, FT2232H FIFO north, inputs west
+[[route]]
+net = "SD_*"
+
+[[route]]
+net = "FT_*"
+
+[[route]]
+net = "CH*"
+
+[[route]]
+net = "USB_*"
+order = "length"
+
+# everything else, shortest first (planes connect through their pours)
+[[route]]
+net = "*"
+order = "length"
+
+[router]
+joints = false
