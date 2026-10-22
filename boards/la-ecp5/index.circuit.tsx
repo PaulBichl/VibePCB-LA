@@ -8,7 +8,8 @@
 //   build, `pcb padtable la-ecp5 U1 U2 U3 U6 U7 R50 R54 R81 R82`, build again.
 // - Config: SPI master boot (CFG[2:0] = 010) from the W25Q128 on bank 8; FT2232H channel B (MPSSE) programs the
 //   flash while it holds PROGRAMN low. JTAG on J5.
-// - Inputs, bank rails, SDRAM, USB: as la-bga54m.
+// - Inputs: 1k series, 1M pull-down, SRV05-4 clamp, 74LVC8T245 per bank of 8; bank rails set by FPGA PWM + TLV9062.
+// - SDRAM: IS42S16160J (BGA-54) east; USB: USB-C, USBLC6, FT2232H (channel A sync FIFO, channel B programs the flash).
 // - Power: 5 V -> TLV62569 3.3 V (IO), 1.1 V (core), 2.5 V (aux). < 3 W.
 import { A_93LC56BT_I_OT } from "./imports/A_93LC56BT_I_OT"
 import { FT2232HL_REEL } from "./imports/FT2232HL_REEL"

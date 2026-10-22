@@ -1,0 +1,17 @@
+(version 1)
+(rule "board config: length group SDRAM_DQ"
+  (condition "A.NetName == 'SD_DQ*'")
+  (constraint skew (max 45mm)))
+(rule "board config: length group SDRAM_CA"
+  (condition "A.NetName == 'SD_A*' || A.NetName == 'SD_BS*' || A.NetName == 'SD_N_*' || A.NetName == 'SD_CLK' || A.NetName == 'SD_CKE' || A.NetName == 'SD_LDQM' || A.NetName == 'SD_UDQM'")
+  (constraint skew (max 45mm)))
+(rule "board config: diff pairs"
+  (condition "A.inDiffPair('*')")
+  (constraint diff_pair_uncoupled (max 3mm)))
+(rule "zone pads: one thermal spoke is enough"
+  (constraint min_resolved_spokes 1))
+(rule "router clearance: float tolerance"
+  (condition "A.NetClass == 'Default' && B.NetClass == 'Default'")
+  (constraint clearance (min 0.095mm)))
+(rule "no acute track angles"
+  (constraint track_angle (min 89)))

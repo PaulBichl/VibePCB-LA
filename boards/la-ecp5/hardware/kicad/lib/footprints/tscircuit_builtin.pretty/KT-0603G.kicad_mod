@@ -1,0 +1,169 @@
+(footprint "KT-0603G"
+  (layer F.Cu)
+  (property "Reference" "REF**"
+    (at 0 -3 0)
+    (layer F.SilkS)
+    (hide yes)
+    (uuid 4398043c-4512-9924-3242-c97c5667d3e4)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Value" "KT-0603G"
+    (at 0 3 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 77e592f8-3a7d-afe8-131f-0d3860bbca58)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Datasheet" ""
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 581565f0-1f3f-fcb0-696a-a0b00deac1f0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Description" ""
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 51e6d99e-496e-181e-40f5-569e387c951e)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Supplier Part Number" "C12624"
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 363a9560-20d2-d75f-0b6b-195e09fca4a3)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "MPN" "KT-0603G"
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 57226104-36fb-6204-16d4-630409529bfc)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (fp_text reference "D20"
+    (at 0 -1.1999999999999993 0)
+    (layer F.SilkS)
+    (effects
+      (font
+        (size 0.6000000000000001 0.6000000000000001)
+        (thickness 0.15)
+      )
+    )
+  )
+  (fp_line
+    (start 0.7490000000000023 0)
+    (end 0.2995999999999981 0)
+    (stroke
+      (width 0.08)
+      (type default)
+    )
+    (layer F.Fab)
+  )
+  (fp_line
+    (start 0.2995999999999981 -0.22469999999999857)
+    (end -0.29960000000000164 0)
+    (stroke
+      (width 0.08)
+      (type default)
+    )
+    (layer F.Fab)
+  )
+  (fp_line
+    (start -0.29960000000000164 0)
+    (end 0.2995999999999981 0.22469999999999857)
+    (stroke
+      (width 0.08)
+      (type default)
+    )
+    (layer F.Fab)
+  )
+  (fp_line
+    (start 0.2995999999999981 0.22469999999999857)
+    (end 0.2995999999999981 -0.22469999999999857)
+    (stroke
+      (width 0.08)
+      (type default)
+    )
+    (layer F.Fab)
+  )
+  (fp_line
+    (start -0.29960000000000164 -0.22469999999999857)
+    (end -0.29960000000000164 0.22469999999999857)
+    (stroke
+      (width 0.08)
+      (type default)
+    )
+    (layer F.Fab)
+  )
+  (fp_line
+    (start -0.29960000000000164 0)
+    (end -0.7490000000000023 0)
+    (stroke
+      (width 0.08)
+      (type default)
+    )
+    (layer F.Fab)
+  )
+  (fp_rect
+    (start -1.399 -0.66)
+    (end 1.399 0.66)
+    (layer F.CrtYd)
+    (stroke
+      (width 0.05)
+      (type default)
+    )
+    (fill no)
+  )
+  (pad "1" smd rect
+    (at -0.7489999999999988 0 0)
+    (size 0.8 0.8)
+    (layers F.Cu F.Paste F.Mask)
+    (uuid 67040f82-5399-1cc2-402e-2a022cc33742)
+  )
+  (pad "2" smd rect
+    (at 0.7490000000000023 0 0)
+    (size 0.8 0.8)
+    (layers F.Cu F.Paste F.Mask)
+    (uuid 28b23ac0-7aa6-857f-3365-2fc21e8f1afd)
+  )
+  (model "${KIPRJMOD}/3dmodels/tscircuit_builtin.3dshapes/C12624.step"
+    (offset
+      (xyz 0.000012700000070253736 -0.000012699999956566899 0.01)
+    )
+    (rotate
+      (xyz 0 0 0)
+    )
+  )
+)

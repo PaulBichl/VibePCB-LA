@@ -10,7 +10,7 @@ diff_pair_gap = 0.15
 [diff_pair]
 max_uncoupled = 3.0
 
-# SDRAM bus at 100 MHz SDR: skew <= 0.3 ns (~45 mm) is ~10 % of the read window (see la-main)
+# SDRAM bus at 100 MHz SDR: skew <= 0.3 ns (~45 mm) is ~10 % of the read window
 [length_group.SDRAM_DQ]
 nets = ["SD_DQ*"]
 max_skew = 45.0

@@ -1,0 +1,172 @@
+(footprint "X322512MSB4SI"
+  (layer F.Cu)
+  (property "Reference" "REF**"
+    (at 0 -3 0)
+    (layer F.SilkS)
+    (hide yes)
+    (uuid 4a1c9700-1cf8-cda1-102a-fbbe3d4ec51d)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Value" "X322512MSB4SI"
+    (at 0 3 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 085635c0-12f0-e921-2e38-0802497f26e3)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Datasheet" ""
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 677da8c0-3a59-df61-0d36-16021fedb35d)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Description" ""
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 4dae03e0-3efb-0aa1-345b-e6de584d27a3)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Supplier Part Number" "C9002"
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 640c6656-398b-978a-28dc-6a9674bb934a)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "MPN" "X322512MSB4SI"
+    (at 0 0 0)
+    (layer F.Fab)
+    (hide yes)
+    (uuid 489f8900-7922-6801-565a-b8fe25d7d9fd)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (thickness 0.15)
+      )
+    )
+  )
+  (fp_text reference "Y1"
+    (at 0 -2.25 0)
+    (layer F.SilkS)
+    (effects
+      (font
+        (size 0.7 0.7)
+        (thickness 0.15)
+      )
+    )
+  )
+  (fp_line
+    (start -2 1.6499999999999986)
+    (end 2 1.6499999999999986)
+    (stroke
+      (width 0.1)
+      (type default)
+    )
+    (layer F.SilkS)
+  )
+  (fp_line
+    (start 2 1.6499999999999986)
+    (end 2 -1.6499999999999986)
+    (stroke
+      (width 0.1)
+      (type default)
+    )
+    (layer F.SilkS)
+  )
+  (fp_line
+    (start 2 -1.6499999999999986)
+    (end -2 -1.6499999999999986)
+    (stroke
+      (width 0.1)
+      (type default)
+    )
+    (layer F.SilkS)
+  )
+  (fp_line
+    (start -2 -1.6499999999999986)
+    (end -2 1.6499999999999986)
+    (stroke
+      (width 0.1)
+      (type default)
+    )
+    (layer F.SilkS)
+  )
+  (fp_line
+    (start -1.0999999999999996 -0.8500000000000014)
+    (end 1.0999999999999996 0.8500000000000014)
+    (stroke
+      (width 0.05)
+      (type default)
+    )
+    (layer F.Fab)
+  )
+  (fp_rect
+    (start -2.05 -1.7)
+    (end 2.05 1.7)
+    (layer F.CrtYd)
+    (stroke
+      (width 0.05)
+      (type default)
+    )
+    (fill no)
+  )
+  (pad "1" smd rect
+    (at -1.0999999999999996 0.8500000000000014 0)
+    (size 1.4 1.2)
+    (layers F.Cu F.Paste F.Mask)
+    (uuid 56ca5b40-4aed-a09f-135a-638271a267a3)
+  )
+  (pad "2" smd rect
+    (at 1.0999999999999996 0.8500000000000014 0)
+    (size 1.4 1.2)
+    (layers F.Cu F.Paste F.Mask)
+    (uuid 278e33c8-3507-c008-4281-4c484ffad888)
+  )
+  (pad "3" smd rect
+    (at 1.0999999999999996 -0.8500000000000014 0)
+    (size 1.4 1.2)
+    (layers F.Cu F.Paste F.Mask)
+    (uuid 6c009a80-0db8-965f-508f-6dc251288e1d)
+  )
+  (pad "4" smd rect
+    (at -1.0999999999999996 -0.8500000000000014 0)
+    (size 1.4 1.2)
+    (layers F.Cu F.Paste F.Mask)
+    (uuid 15182064-7fd0-a044-1576-dfdc5541a004)
+  )
+  (model "${KIPRJMOD}/3dmodels/tscircuit_builtin.3dshapes/C9002.step"
+    (offset
+      (xyz 0 0.000012700000070253736 0)
+    )
+    (rotate
+      (xyz 0 0 0)
+    )
+  )
+)
